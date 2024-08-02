@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 17:54:09 by kalipso           #+#    #+#             */
-/*   Updated: 2024/08/02 15:34:56 by umosse           ###   ########.fr       */
+/*   Updated: 2024/08/02 16:46:56 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,25 +75,25 @@ char **ft_return_tab_arg(char *input)
 	{
 		if (input[i] == '\"')
 		{
-			length = len_m(&input[i + 1], "\"");
+			length = wii(input[i + 1], "\"");
+			if (length == -1)
+			{
+				printf("wii = %d\n", length);
+				put("ERROR\n");
+				free_s (tab);
+				return (NULL);
+			}
+			printf("wii = %d\n", length);
 			length += 2;
 			if (quotes == 0)
-				quotes = 1;
+				quotes = 2;
 		}
 		if (quotes == 0)
 			length = len_m(&input[i], " \t\n");
 		//printf("size = %d\n", length);
 		word = str("%1.*s", length, &input[i]);
 		//printf("word = %s\n", word);
-		while (length > 0)
-		{
-			if (input[i] == '\"')
-			{
-				
-			}
-			length--;
-			i++;
-		}
+		i += length;
 		//printf("i = %d\n", i);
 		//printf("quotes = %d\n", quotes);
 		quotes = 0;
@@ -143,7 +143,7 @@ char **ft_return_tab_arg(char *input)
 int	main(int ac, char **av, char **env)
 {
 	char **tab = NULL;
-	tab = ft_return_tab_arg("echo a b e b\" a    b  cd e\" a b c");
+	tab = ft_return_tab_arg("echo a b e \" a    b  cd e\" a b c");
 	put("%-t", tab);
 
 	free_tab(tab);
