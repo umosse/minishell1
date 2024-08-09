@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 17:54:09 by kalipso           #+#    #+#             */
-/*   Updated: 2024/08/02 16:46:56 by umosse           ###   ########.fr       */
+/*   Updated: 2024/08/09 13:07:24 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,32 @@ char **ft_return_tab_arg(char *input)
 	quotes = 0;
 	while (input[i])
 	{
+		quotes = 0;
 		if (input[i] == '\"')
 		{
-			length = wii(input[i + 1], "\"");
+			length = wii('"', &input[i + 1]);
 			if (length == -1)
 			{
-				printf("wii = %d\n", length);
-				put("ERROR\n");
-				free_s (tab);
-				return (NULL);
-			}
-			printf("wii = %d\n", length);
-			length += 2;
-			if (quotes == 0)
+				length = len_m(&input[i + 1], "\"");
+				length += 2;
 				quotes = 2;
+				printf("unfinished quotes");
+				return (0);
+			}
+			else
+			{
+				length += 2;
+				quotes = 2;
+			}
 		}
 		if (quotes == 0)
 			length = len_m(&input[i], " \t\n");
-		//printf("size = %d\n", length);
 		word = str("%1.*s", length, &input[i]);
-		//printf("word = %s\n", word);
-		i += length;
-		//printf("i = %d\n", i);
-		//printf("quotes = %d\n", quotes);
-		quotes = 0;
+		while (length > 0)
+		{
+			length--;
+			i++;
+		}
 		tab = expand_tab(tab, word);
 		while (input[i] && input[i] == ' ')
 			i++;
