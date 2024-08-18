@@ -6,45 +6,84 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 13:01:46 by kalipso           #+#    #+#             */
-/*   Updated: 2024/07/30 17:07:06 by umosse           ###   ########.fr       */
+/*   Updated: 2024/08/18 16:31:49 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+t_cmd	*ft_nextcmd(t_data *data, char *input, int *i, t_cmd *cmd)
+{
+	int	j;
+
+	j = 0;
+	while (wii(input[j], " \t\n") >= 0)
+	{
+		(*i)++;
+		j++;
+	}
+}
+
+t_cmd	*ft_nextnode(t_data *data, char *input, int *i, t_cmd *cmd)
+{
+	
+}
+
+int	ft_oneortwo(char *input, int i)
+{
+	if (input[i] == '|')
+	{
+		if (input[i + 1] == '|')
+		{
+			if (input[i + 2] == '|' || input[i + 2] == '&')
+				return (3);
+			else
+				return (2);
+		}
+		else if (input[i + 1] == '&')
+			return (3);
+	}
+	if (input[i] == '&')
+	{
+		if (input[i + 1] == '&')
+		{
+			if (input[i + 2] == '|' || input[i + 2] == '&')
+				return (3);
+			else
+				return (2);
+		}
+		else if (input[i + 1] == '|')
+			return (3);
+	}
+	else
+		return (1);
+}
+
 int	ft_parsing(t_data *data, char *input)
 {
 	int		i;
-	int		j;
-	char	*word;
-	char	**tab;
 	t_cmd	*ptr;
-	
+	int		oneortwo;
+
+	data->cmd = new_cmd(data->cmd, 0);
+	if (!data->cmd)
+		return (1);
 	ptr = data->cmd->cmd;
-	tab = NULL;
 	i = 0;
-	j = 0;
 	while (input[i])
 	{
-		if (input[i] == ' ')
+		if (input[i] == '|' || input[i] == '&')
 		{
-			word = malloc(j + 2);
-			while (input[j] != ' ')
-			{
-				word[j] = input[j];
-				j++;
-			}
-			tab = expand_tab(tab, word);
-			free_s(word);
-			j = 0;
-			while (input[i] == ' ')
-				i++;
+			oneortwo = ft_oneortwo(input, i);
+			if (oneortwo == 1)
+				ptr = ft_nextnode(data, &input[i], &i, ptr);
+			else if (oneortwo == 2)
+				ptr = ft_nextcmd(data, &input[i], &i, ptr);
+			else
+				return (1);
 		}
-		i++;
-		j++;
 	}
-	ptr->cmd_arg = tab;
-	return (0);
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////]

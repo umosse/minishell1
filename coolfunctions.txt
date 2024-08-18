@@ -4,3 +4,4 @@ wii -> pretty much a strchr which returns the length of the string up until the 
 len_m -> wii but returns the length of the entire line if the character was not found
 expand_tab -> concatenates and mallocs a new array to an array of arrays
 ft_print_cat -> args are : int, *char, control byte (0bxy) where x is whether or not you clear the screen and y stops the prog until you press enter
+new_node -> 

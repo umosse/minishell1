@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/19 17:54:09 by kalipso           #+#    #+#             */
-/*   Updated: 2024/08/09 13:07:24 by umosse           ###   ########.fr       */
+/*   Updated: 2024/08/09 16:46:27 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,36 @@ You can set various limits using ulimit. Here are some common options:
 
 // "echo a b e "a     laj     kdf     hl""
 
-char **ft_return_tab_arg(char *input)
+/* char	**ft_split_list(char *input)
+{
+	int		i;
+	int		j;
+	int		length;
+	int		quotes;
+	char	*word;
+
+	i = 0;
+	quotes = 0;
+	while (input[i])
+	{
+		if (input[i] == '"' || input[i] == '\'')
+		{
+			if (quotes == 0)
+				quotes = 1;
+			else
+				quotes = 0;
+			if ((input[i] == '|' && quotes == 0))
+			{
+				new_node(t_cmd *previous) = str("%1.*s", j, &input[i - j]);
+				j = 0;
+			}
+		}
+		j++;
+		i++;
+	}
+} */
+
+char	**ft_return_tab_arg(char *input)
 {
 	int		i;
 	int		length;
@@ -142,10 +171,12 @@ char **ft_return_tab_arg(char *input)
 // 	return (0);
 // }
 ///////////////////////////////////////////////////////////////////////////////]
+// input > "abc"def$45"echo"
 int	main(int ac, char **av, char **env)
 {
 	char **tab = NULL;
-	tab = ft_return_tab_arg("echo a b e \" a    b  cd e\" a b c");
+	tab = ft_return_tab_arg("echo a b e \" a    b  cd e \" a b c");
+	//tab = ft_split_list("echo a b e \" a    b  cd e\" a b c");
 	put("%-t", tab);
 
 	free_tab(tab);

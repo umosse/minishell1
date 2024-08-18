@@ -217,18 +217,28 @@ test:	libft
 	@$(call random_cat, $(call pad_word, 12, "Making"), $(call pad_word, 14, "Science"), $(CLS), $(RESET));
 	@lib/a.out
 
+vtest:	libft
+	@rm -f ./lib/a.out
+	-@cc ./lib/test.c ./lib/libft.a -o ./lib/a.out $(ADD_FLAGS)
+	@if [ ! -e ./lib/a.out ]; then\
+		$(call print_cat, "", $(RED), $(GOLD), $(RED_L), $(call pad_word, 10, "The⠀Cake"), $(call pad_word, 12, "Is⠀A⠀Lie..")); \
+		exit 3; \
+	fi
+	@$(call random_cat, $(call pad_word, 12, "Making"), $(call pad_word, 14, "Science"), $(CLS), $(RESET));
+	@$(VALGRIND) lib/a.out
+
 FLAGS_TEST = -g -fPIE -I$(HEADER_FOLDER)
 
-test2:	libft $(OBJ) inc/$(NAME).h
+t2:	libft $(OBJ) inc/$(NAME).h
 	@rm -f ./lib/a.out
 	@$(CC) $(FLAGS_TEST) $(OBJ) ./lib/test.c lib/libft.a $(ADD_FLAGS) -o ./lib/a.out
 	@$(call random_cat, $(call pad_word, 12, "TESTING"), $(call pad_word, 14, "SCIENCE"), $(CLS), $(RESET));
-	-@$(VALGRIND) lib/a.out
+	@lib/a.out
 
-vtest:	libft
+vt2:	libft $(OBJ) inc/$(NAME).h
 	@rm -f ./lib/a.out
 	@$(CC) $(FLAGS_TEST) $(OBJ) ./lib/test.c lib/libft.a $(ADD_FLAGS) -o ./lib/a.out
-	@$(call print_cat, "", $(RED), $(GOLD), $(BLUE1), $(call pad_word, 10, "TESTING"), $(call pad_word, 12, "SCIENCE.."));
+	@$(call random_cat, $(call pad_word, 12, "TESTING"), $(call pad_word, 14, "SCIENCE"), $(CLS), $(RESET));
 	-@$(VALGRIND) lib/a.out
 # --------------------------------------------------------------------------------- >
 # 																				CLEAN
